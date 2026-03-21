@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bongo Basket | Login</title>
+    <style>
+        :root {
+            /* Brand Colors from Logo/Dashboard */
+            --brand-gradient: linear-gradient(135deg, #a21caf 0%, #db2777 50%, #f97316 100%);
+            --navy-dark: #1e1b4b;
+            --brand-pink: #db2777;
+            --bg-light: #fdf2f8;
+            /* Soft pinkish background */
+            --shadow: 0 10px 40px rgba(162, 28, 175, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: var(--bg-light);
+            background-image:
+                radial-gradient(circle at 20% 20%, #ffdee9 0%, transparent 40%),
+                radial-gradient(circle at 80% 30%, #b5fffc 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, #c3bef0 0%, transparent 40%),
+                linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            --text-muted: #64748b;
+            --white: #ffffff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .logo-box {
+            margin-bottom: 20px;
+        }
+
+        .logo-box img {
+            max-width: 100px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            /* Optional: slight shadow to make logo pop */
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        h2 {
+            margin: 10px 0;
+            color: var(--navy-dark);
+            font-weight: 800;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .input-wrapper {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--navy-dark);
+            margin-bottom: 8px;
+            margin-left: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--brand-pink);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            margin-top: 10px;
+            background: var(--brand-gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(219, 39, 119, 0.3);
+        }
+
+        button:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(219, 39, 119, 0.4);
+        }
+
+        #message {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #ef4444;
+            min-height: 18px;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .footer a {
+            color: var(--brand-pink);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="logo-box">
+            <img src="logo.png" alt="Bongo Basket Logo">
+        </div>
+
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Access the marketplace & dashboard</p>
+
+        <form id="loginForm">
+            <div class="input-wrapper">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Your username" required>
+            </div>
+
+            <div class="input-wrapper">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit">Sign In</button>
+        </form>
+
+        <p id="message"></p>
+
+        <div class="footer">
+            New to Bongo Basket? <a href="index.html">Create Account</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const messageEl = document.getElementById('message');
+
+            messageEl.innerText = "";
+            messageEl.style.color = "#ef4444";
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                messageEl.innerText = "Username and password are required";
+                return;
+            }
+
+            try {
+                const response = await fetch(' https://bongo-basket-backend-9.onrender.com/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageEl.style.color = "#10b981";
+                    messageEl.innerText = "Login Successful! Redirecting...";
+
+                    localStorage.setItem('user', data.username || username);
+
+                    setTimeout(() => {
+                        if (data.role === "CUSTOMER") {
+                            window.location.href = 'userdashboad.html';
+                        } else if (data.role === "ADMIN") {
+                            window.location.href = 'admindasboard.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1000);
+
+                } else {
+                    messageEl.innerText = data.error || "Invalid username or password.";
+                }
+
+            } catch (err) {
+                console.error(err);
+                messageEl.innerText = "Connection error. Ensure your Backend is running.";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

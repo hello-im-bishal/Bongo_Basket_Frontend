@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bongo Basket | Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Colors extracted from the Bongo Basket Logo */
+            --logo-purple: #7c3aed;
+            --logo-pink: #db2777;
+            --logo-orange: #f59e0b;
+            --logo-cyan: #06b6d4;
+
+            --navy: #1e1b4b;
+            --bg:
+                radial-gradient(circle at 20% 20%, #ffdee9 0%, transparent 40%),
+                radial-gradient(circle at 80% 30%, #b5fffc 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, #c3bef0 0%, transparent 40%),
+                linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            --text-muted: #64748b;
+            --white: #ffffff;
+
+            /* Gradient used in the branding */
+            --brand-gradient: linear-gradient(135deg, var(--logo-purple), var(--logo-pink), var(--logo-orange));
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+             background-image:
+                radial-gradient(circle at 20% 20%, #ffdee9 0%, transparent 40%),
+                radial-gradient(circle at 80% 30%, #b5fffc 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, #c3bef0 0%, transparent 40%),
+                linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            --text-muted: #64748b;
+            --white: #ffffff;
+            line-height: 1.5;
+        }
+
+         
+        /* --- NAVIGATION --- */
+        nav {
+            background: var(--brand-gradient);
+            padding: 12px 5%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-box img {
+            height: 48px;
+            background: white;
+            padding: 4px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-box h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            font-weight: 800;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            flex-grow: 1;
+            max-width: 450px;
+            margin: 10px 30px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-menu {
+            position: relative;
+            cursor: pointer;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: white;
+            min-width: 180px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 10px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .dropdown-content a {
+            color: var(--navy);
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background: #fdf2f8;
+            color: var(--logo-pink);
+        }
+
+        .profile-menu:hover .dropdown-content {
+            display: block;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.6rem;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: var(--logo-orange);
+            color: white;
+            font-weight: 800;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
+        /* --- CATEGORIES --- */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            background: white;
+            padding: 18px;
+            list-style: none;
+            margin: 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            flex-wrap: wrap;
+        }
+
+        .categories li {
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.3s;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .categories li:hover,
+        .categories li.active {
+            color: var(--logo-purple);
+        }
+
+        .categories li.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--brand-gradient);
+            border-radius: 2px;
+        }
+
+        /* --- PRODUCTS --- */
+        .container {
+            padding: 40px 5%;
+        }
+
+        #view-title {
+            font-weight: 800;
+            font-size: 24px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--logo-orange);
+            padding-left: 15px;
+            text-transform: capitalize;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+            border: 1px solid #f1f5f9;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.1);
+        }
+
+        .img-box {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .img-box img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+            transition: 0.3s;
+        }
+
+        .card h4 {
+            margin: 10px 0 5px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .product-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 38px;
+        }
+
+        .price {
+            color: var(--logo-orange);
+            font-weight: 800;
+            font-size: 1.4rem;
+            margin: 10px 0;
+        }
+
+        .add-btn {
+            background: var(--brand-gradient);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 800;
+            margin-top: auto;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px;
+            }
+
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 15px 0 0;
+            }
+
+            .categories {
+                gap: 15px;
+                padding: 12px;
+            }
+
+            .categories li {
+                font-size: 11px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo-box" onclick="location.reload()">
+            <img src="logo.png" alt="Bongo Basket Logo">
+            <h2>BONGO BASKET</h2>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search for products..."
+                onkeyup="filterProducts()">
+        </div>
+
+        <div class="nav-right">
+            <div class="profile-menu">
+                Hi, <span id="userDisp">Guest</span>
+                <div class="dropdown-content">
+                    <a href="orderhistory.html">📦 Your Orders</a>
+                    <a href="#" onclick="logout()" style="color: #ef4444; border-top: 1px solid #f1f5f9;">🚪 Logout</a>
+                </div>
+            </div>
+
+            <div class="cart-icon" onclick="window.location.href='cart.html'">
+                🛒 <span class="badge" id="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <ul class="categories" id="catBar">
+        <li class="active" onclick="handleCatClick(this, 'all')">All Products</li>
+        <li onclick="handleCatClick(this, 'Shirts')">Shirts</li>
+        <li onclick="handleCatClick(this, 'Pants')">Pants</li>
+        <li onclick="handleCatClick(this, 'Shoe')">Shoes</li>
+        <li onclick="handleCatClick(this, 'Mobiles')">Mobiles</li>
+        <li onclick="handleCatClick(this, 'Mobile Accessories')">Mobile Accessories</li>
+        <li onclick="handleCatClick(this, 'Accessories')">Accessories</li>
+    </ul>
+
+    <div class="container">
+        <h2 id="view-title">New Arrivals</h2>
+        <div class="product-grid" id="grid"></div>
+    </div>
+
+    <script>
+        const API_BASE = " https://bongo-basket-backend-9.onrender.com";
+        const currentUsername = localStorage.getItem("user");
+        let allLoadedProducts = [];
+
+        window.onload = () => {
+            if (!currentUsername || currentUsername === "Guest User") {
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('userDisp').innerText = currentUsername;
+            loadProducts('all');
+            fetchCartCount();
+        };
+
+        function handleCatClick(el, cat) {
+            document.querySelectorAll('.categories li').forEach(li => li.classList.remove('active'));
+            el.classList.add('active');
+            loadProducts(cat);
+        }
+
+        async function loadProducts(category) {
+            const grid = document.getElementById('grid');
+            const title = document.getElementById('view-title');
+
+            title.innerText = category === 'all' ? "All Products" : (category === 'Shoe' ? "Shoes" : category);
+            grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; padding: 50px;'>Fetching latest items...</p>";
+
+            try {
+                const url = category === 'all'
+                    ? `${API_BASE}/api/products`
+                    : `${API_BASE}/api/products?category=${encodeURIComponent(category)}`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                allLoadedProducts = data.products || data || [];
+                renderProducts(allLoadedProducts);
+            } catch (error) {
+                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: red;'>Unable to load products. Check server connection.</p>";
+            }
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('grid');
+            if (!products || products.length === 0) {
+                grid.innerHTML = "<h3>No products found in this category.</h3>";
+                return;
+            }
+
+            grid.innerHTML = products.map(p => `
+            <div class="card">
+                <div class="img-box">
+                    <img src="${p.images && p.images.length > 0 ? p.images[0] : 'https://via.placeholder.com/150'}" alt="${p.name}">
+                </div>
+                <h4>${p.name}</h4>
+                <p class="product-desc">${p.description || 'Quality product from Bongo Basket'}</p>
+                <div class="price">₹${p.price}</div>
+                <button class="add-btn" onclick="addToCart(${p.product_id})">ADD TO BASKET</button>
+            </div>
+        `).join('');
+        }
+
+        function filterProducts() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allLoadedProducts.filter(p => p.name.toLowerCase().includes(term));
+            renderProducts(filtered);
+        }
+
+        async function addToCart(productId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/cart/add`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: currentUsername,
+                        productId: productId,
+                        quantity: 1
+                    })
+                });
+
+                if (response.ok) {
+                    alert("Item added to basket!");
+                    fetchCartCount();
+                }
+            } catch (error) {
+                alert("Connection error.");
+            }
+        }
+
+        async function fetchCartCount() {
+            try {
+                const res = await fetch(`${API_BASE}/api/cart/items/count?username=${encodeURIComponent(currentUsername)}`);
+                if (res.ok) {
+                    const count = await res.json();
+                    document.getElementById('cart-count').innerText = count;
+                }
+            } catch (e) { }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+    </script>
+
+</body>
+
+</html>

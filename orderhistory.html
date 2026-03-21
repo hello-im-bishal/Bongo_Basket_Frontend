@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bongo Basket | My Orders</title>
+
+    <style>
+        /* MATCHING BRAND COLORS */
+        :root {
+            --brand-gradient: linear-gradient(90deg, #9c27b0, #f44336, #ff9800);
+            --navy-sidebar: #1e1e3f;
+            --bg-light: #f4f7fe;
+            --text-dark: #2d3748;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            /* base color to remove transparent edge */
+
+            background-image:
+                radial-gradient(circle at 20% 20%, #ffdee9 0%, transparent 40%),
+                radial-gradient(circle at 80% 30%, #b5fffc 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, #c3bef0 0%, transparent 40%),
+                linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            color: var(--navy);
+        }
+
+        /* NAVBAR - MATCHING DASHBOARD HEADER */
+        nav {
+            background: var(--brand-gradient);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-box img {
+            height: 35px;
+            background: white;
+            padding: 4px;
+            border-radius: 6px;
+        }
+
+        /* CONTAINER */
+        .container {
+            padding: 40px 5%;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .page-title {
+            color: var(--navy-sidebar);
+            font-weight: 800;
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #ff9800;
+            display: inline-block;
+        }
+
+        /* ORDER CARD - PREMIUM LOOK */
+        .order-card {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+        }
+
+        /* TOP BAR - ORDER META */
+        .order-meta-header {
+            background: #fafbff;
+            padding: 18px 25px;
+            border-bottom: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-info-group {
+            display: flex;
+            gap: 40px;
+        }
+
+        .label {
+            color: #a0aec0;
+            display: block;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .value {
+            color: var(--navy-sidebar);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* BODY */
+        .order-body {
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .product-img {
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid #f1f1f1;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy-sidebar);
+            margin: 0 0 8px 0;
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: #718096;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .price-details {
+            text-align: right;
+            border-left: 2px solid #edf2f7;
+            padding-left: 30px;
+        }
+
+        .status-badge {
+            background: #e6fffa;
+            color: #047481;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            border: 1px solid #b2f5ea;
+        }
+
+        .grand-total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f44336;
+            /* Matching the red/orange in the logo */
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* LOADER - BRANDED */
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #9c27b0;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 100px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-return {
+            display: inline-block;
+            margin-top: 20px;
+            background: var(--brand-gradient);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media(max-width:768px) {
+            .order-meta-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .order-info-group {
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .order-body {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .price-details {
+                border-left: none;
+                border-top: 2px solid #edf2f7;
+                padding: 20px 0 0 0;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="userdashboad.html" class="logo-box">
+            <img src="logo.png" alt="Logo">
+            <h2 style="margin:0; font-size: 1.3rem; letter-spacing: 0.5px;">BONGO BASKET</h2>
+        </a>
+        <div style="font-weight: 600; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px;">
+            👤 <span id="userDisp">User</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Order History</h1>
+        <div id="loading" class="loader"></div>
+        <div id="order-container"></div>
+    </div>
+
+    <script>
+        const API_BASE = " https://bongo-basket-backend-9.onrender.com";
+        const username = localStorage.getItem("user");
+
+        window.onload = () => {
+            if (!username) {
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('userDisp').innerText = username;
+            loadHistory();
+        };
+
+        async function loadHistory() {
+            try {
+                const response = await fetch(`${API_BASE}/api/orders?username=${encodeURIComponent(username)}`);
+                const data = await response.json();
+
+                const container = document.getElementById('order-container');
+                document.getElementById('loading').style.display = 'none';
+
+                if (!data.products || data.products.length === 0) {
+                    container.innerHTML = `
+            <div class="no-data">
+                <h3 style="font-size: 1.8rem; color: var(--navy-sidebar);">No orders found!</h3>
+                <p style="color: #718096;">Your basket is waiting to be filled with the latest electronics and fashion.</p>
+                <a href="userdashboad.html" class="btn-return">Go Shopping</a>
+            </div>`;
+                    return;
+                }
+
+                container.innerHTML = data.products.map(item => {
+                    const rawDate = item.order_date || new Date();
+                    const formattedDate = new Date(rawDate).toLocaleDateString('en-IN', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                    });
+
+                    return `
+            <div class="order-card">
+                <div class="order-meta-header">
+                    <div class="order-info-group">
+                        <div>
+                            <span class="label">Order Placed</span>
+                            <span class="value">${formattedDate}</span>
+                        </div>
+                        <div>
+                            <span class="label">Order ID</span>
+                            <span class="value">#${item.order_id}</span>
+                        </div>
+                    </div>
+                    <span class="status-badge">✓ PAYMENT SUCCESS</span>
+                </div>
+
+                <div class="order-body">
+                    <img src="${item.image_url || 'images/default-product.png'}" 
+                         class="product-img" 
+                         onerror="this.src='https://via.placeholder.com/110?text=Bongo+Basket'">
+
+                    <div class="product-details">
+                        <p class="product-name">${item.name}</p>
+                        <p class="product-desc">${item.description || 'Verified Quality Product'}</p>
+                        <p style="font-size: 0.9rem; margin-top: 12px; color: var(--text-dark);">
+                            Quantity: <b>${item.quantity}</b> 
+                            <span style="margin: 0 10px; color: #cbd5e1;">|</span> 
+                            Price: <b>₹${item.price_per_unit}</b>
+                        </p>
+                    </div>
+
+                    <div class="price-details">
+                        <span class="label">Total Paid</span>
+                        <span class="grand-total">₹${item.total_price.toFixed(2)}</span>
+                    </div>
+                </div>
+            </div>`;
+                }).join('');
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loading').innerHTML =
+                    "<div class='no-data'><p style='color:#f44336; font-weight:bold;'>Error connecting to the basket server. Please try again later.</p></div>";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

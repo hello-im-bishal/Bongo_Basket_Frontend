@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bongo Basket | Your Basket</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Brand Colors from Logo */
+            --logo-purple: #7c3aed;
+            --logo-pink: #db2777;
+            --logo-orange: #f59e0b;
+            --navy: #1e1b4b;
+            --bg: #f8fafc;
+            --text-muted: #64748b;
+            --brand-gradient: linear-gradient(135deg, var(--logo-purple), var(--logo-pink), var(--logo-orange));
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            /* base color to remove transparent edge */
+
+            background-image:
+                radial-gradient(circle at 20% 20%, #ffdee9 0%, transparent 40%),
+                radial-gradient(circle at 80% 30%, #b5fffc 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, #c3bef0 0%, transparent 40%),
+                linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            color: var(--navy);
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--brand-gradient);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-box img {
+            height: 45px;
+            background: white;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        /* Layout */
+        .container {
+            padding: 40px 5%;
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 30px;
+        }
+
+        /* Cart Side */
+        .cart-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f1f5f9;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 25px 0;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 20px;
+            transition: 0.2s;
+        }
+
+        .item-img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border-radius: 15px;
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+        }
+
+        .item-info {
+            flex-grow: 1;
+        }
+
+        .item-info h4 {
+            margin: 0 0 8px 0;
+            color: var(--navy);
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .item-price {
+            color: var(--logo-purple);
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        /* Quantity Controls */
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f1f5f9;
+            padding: 8px 18px;
+            border-radius: 50px;
+        }
+
+        .qty-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--logo-purple);
+            font-weight: bold;
+            padding: 0 5px;
+        }
+
+        .delete-btn {
+            background: none;
+            color: #ef4444;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 10px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .delete-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* Summary Side */
+        .summary-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            border-top: 5px solid var(--logo-orange);
+        }
+
+        /* Shipping Progress UI */
+        .shipping-banner {
+            background: #fffbeb;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 1px dashed var(--logo-orange);
+        }
+
+        .progress-bg {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            margin: 12px 0 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--logo-purple), var(--logo-pink));
+            height: 100%;
+            width: 0%;
+            transition: width 0.8s ease;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .total-row {
+            border-top: 2px dashed #f1f5f9;
+            padding-top: 20px;
+            margin-top: 20px;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--navy);
+        }
+
+        .checkout-btn {
+            background: var(--brand-gradient);
+            color: white;
+            border: none;
+            padding: 20px;
+            width: 100%;
+            border-radius: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 10px 15px -3px rgba(219, 39, 119, 0.3);
+        }
+
+        .checkout-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 20px -3px rgba(219, 39, 119, 0.4);
+        }
+
+        .empty-state {
+            grid-column: span 2;
+            text-align: center;
+            padding: 100px 20px;
+            background: white;
+            border-radius: 30px;
+        }
+
+        /* --- MOBILE & TAB --- */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .summary-card {
+                position: static;
+                margin-top: 10px;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .item-total-price {
+                text-align: center !important;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="userdashboad.html" class="logo-box">
+            <img src="logo.pnggit " alt="Logo">
+            <h2 style="margin:0; font-size: 1.4rem; letter-spacing: 1px; font-weight: 800;">BONGO BASKET</h2>
+        </a>
+        <div style="font-weight: 600; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px;">
+            👋 <span id="userDisp">User</span>
+        </div>
+    </nav>
+
+    <div class="container" id="main-content">
+        <div class="cart-card">
+            <h2 style="margin-top:0; color: var(--navy); font-weight: 800;">Your Basket</h2>
+            <div id="cart-list">
+                <p style="color: #64748b; padding: 20px; text-align: center;">Opening your basket...</p>
+            </div>
+        </div>
+
+        <div class="summary-card" id="summary-card" style="display: none;">
+            <div class="shipping-banner">
+                <div id="shipping-msg" style="font-weight: 700; font-size: 14px; color: var(--navy);"></div>
+                <div class="progress-bg">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <h3 style="margin-top:0; font-weight: 800;">Order Summary</h3>
+            <div class="summary-row">
+                <span>Items Subtotal</span>
+                <span id="sub-val" style="font-weight: 700;">₹0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery Fee</span>
+                <span id="ship-val">₹0.00</span>
+            </div>
+            <div class="summary-row total-row">
+                <span>Total</span>
+                <span id="total-val" style="color: var(--logo-pink);">₹0.00</span>
+            </div>
+
+            <button class="checkout-btn" onclick="window.location.href='payment.html'">PROCEED TO PAY</button>
+            <div style="text-align: center; margin-top: 18px; font-size: 12px; color: #94a3b8; font-weight: 600;">
+                Free delivery on orders above ₹1500
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = " https://bongo-basket-backend-9.onrender.com";
+        
+        const currentUsername = localStorage.getItem("user");
+        const MIN_FREE_SHIPPING = 1500;
+        const STANDARD_SHIPPING = 120;
+
+        window.onload = () => {
+            if (!currentUsername) {
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('userDisp').innerText = currentUsername;
+            fetchCart();
+        };
+
+        async function fetchCart() {
+            try {
+                const res = await fetch(`${API_BASE}/api/cart/items?username=${encodeURIComponent(currentUsername)}`);
+                const data = await res.json();
+
+                if (data.cart && data.cart.products && data.cart.products.length > 0) {
+                    renderCartUI(data.cart.products, data.cart.overall_total_price);
+                } else {
+                    showEmpty();
+                }
+            } catch (e) {
+                document.getElementById('cart-list').innerHTML = `<p style="color:red; text-align:center;">Server connection lost.</p>`;
+            }
+        }
+
+        function renderCartUI(products, subtotalAmount) {
+            const sub = parseFloat(subtotalAmount);
+            const shipping = sub >= MIN_FREE_SHIPPING ? 0 : STANDARD_SHIPPING;
+            const total = sub + shipping;
+
+            document.getElementById('summary-card').style.display = 'block';
+            document.getElementById('sub-val').innerText = `₹${sub.toLocaleString()}`;
+            document.getElementById('ship-val').innerHTML = shipping === 0
+                ? `<span style="color:var(--logo-purple); font-weight:bold;">FREE</span>`
+                : `₹${shipping.toFixed(2)}`;
+            document.getElementById('total-val').innerText = `₹${total.toLocaleString()}`;
+
+            const msg = document.getElementById('shipping-msg');
+            const bar = document.getElementById('progress-bar');
+
+            if (sub >= MIN_FREE_SHIPPING) {
+                msg.innerHTML = "✨ You unlocked <b>FREE DELIVERY</b>!";
+                bar.style.width = "100%";
+            } else {
+                const remaining = MIN_FREE_SHIPPING - sub;
+                msg.innerHTML = `Add <b>₹${remaining.toFixed(0)}</b> more for Free Delivery`;
+                const percentage = (sub / MIN_FREE_SHIPPING) * 100;
+                bar.style.width = `${percentage}%`;
+            }
+
+            document.getElementById('cart-list').innerHTML = products.map(item => `
+            <div class="cart-item">
+                <img src="${item.image_url || 'https://via.placeholder.com/100'}" class="item-img" alt="product">
+                <div class="item-info">
+                    <h4>${item.name}</h4>
+                    <div class="item-price">₹${parseFloat(item.price_per_unit).toLocaleString()}</div>
+                    <button class="delete-btn" onclick="removeItem(${item.product_id})">🗑️ Remove Item</button>
+                </div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQty(${item.product_id}, ${item.quantity - 1})">−</button>
+                    <span style="font-weight:800; width: 25px; text-align:center; color:var(--navy);">${item.quantity}</span>
+                    <button class="qty-btn" onclick="changeQty(${item.product_id}, ${item.quantity + 1})">+</button>
+                </div>
+                <div class="item-total-price" style="min-width: 120px; text-align: right; font-weight: 800; color: var(--navy); font-size: 1.2rem;">
+                    ₹${parseFloat(item.total_price).toLocaleString()}
+                </div>
+            </div>
+        `).join('');
+        }
+
+        async function changeQty(id, newQ) {
+            if (newQ < 1) return removeItem(id);
+            const res = await fetch(`${API_BASE}/api/cart/update`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUsername, productId: id, quantity: newQ })
+            });
+            if (res.ok) fetchCart();
+        }
+
+        async function removeItem(id) {
+            if (!confirm("Remove this item from your basket?")) return;
+            const res = await fetch(`${API_BASE}/api/cart/delete`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUsername, productId: id })
+            });
+            if (res.ok) fetchCart();
+        }
+
+        function showEmpty() {
+            document.getElementById('main-content').innerHTML = `
+            <div class="empty-state">
+                <div style="font-size: 80px; margin-bottom: 20px;">🛍️</div>
+                <h2 style="color: var(--navy); font-weight: 800; font-size: 2rem;">Your basket is empty!</h2>
+                <p style="color: #64748b; margin-bottom: 35px; font-size: 1.1rem;">Looks like you haven't added any Bongo treats yet.</p>
+                <button class="checkout-btn" style="width: auto; padding: 18px 50px;" onclick="window.location.href='userdashboad.html'">START SHOPPING</button>
+            </div>`;
+        }
+    </script>
+</body>
+
+</html>
